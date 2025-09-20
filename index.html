@@ -954,8 +954,13 @@
     <script>
       // 立即执行主题初始化，防止闪烁
       (function() {
-        // 每次进入都默认使用浅色主题，不记住用户选择
-        document.documentElement.setAttribute('data-theme', 'light');
+        // 同步系统主题偏好，但优先浅色
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const stored = localStorage.getItem('theme');
+        
+        // 如果用户手动设置过主题，使用用户选择；否则同步系统偏好
+        const theme = stored || (prefersDark ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
         
         // 立即设置语言
         const storedLang = localStorage.getItem('lang') || 'zh';
@@ -1993,12 +1998,7 @@
         // 初始化
         document.getElementById('year').textContent = new Date().getFullYear();
         
-        // 设置初始语言
-        const storedLang = localStorage.getItem('lang') || 'zh';
-        document.documentElement.setAttribute('lang', storedLang);
-        
-        // 初始化
-        initTheme();
+        // 初始化（主题和语言已在页面头部设置）
         initParticles();
         applyI18n();
         
