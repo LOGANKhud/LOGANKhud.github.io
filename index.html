@@ -954,10 +954,8 @@
     <script>
       // 立即执行主题初始化，防止闪烁
       (function() {
-        const stored = localStorage.getItem('theme');
-        // 默认使用浅色主题，只有用户明确选择过才使用保存的主题
-        const theme = stored || 'light';
-        document.documentElement.setAttribute('data-theme', theme);
+        // 每次进入都默认使用浅色主题，不记住用户选择
+        document.documentElement.setAttribute('data-theme', 'light');
         
         // 立即设置语言
         const storedLang = localStorage.getItem('lang') || 'zh';
@@ -1501,7 +1499,7 @@
           const current = document.documentElement.getAttribute('data-theme') || 'light';
           const next = current === 'dark' ? 'light' : 'dark';
           document.documentElement.setAttribute('data-theme', next);
-          localStorage.setItem('theme', next);
+          // 不保存主题选择到localStorage，每次刷新都回到浅色主题
         });
         
         // 语言切换
