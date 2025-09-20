@@ -955,8 +955,8 @@
       // 立即执行主题初始化，防止闪烁
       (function() {
         const stored = localStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const theme = stored || (prefersDark ? 'dark' : 'light');
+        // 默认使用浅色主题，只有用户明确选择过才使用保存的主题
+        const theme = stored || 'light';
         document.documentElement.setAttribute('data-theme', theme);
         
         // 立即设置语言
@@ -1498,7 +1498,7 @@
         };
         
         document.getElementById('themeToggle')?.addEventListener('click', () => {
-          const current = document.documentElement.getAttribute('data-theme');
+          const current = document.documentElement.getAttribute('data-theme') || 'light';
           const next = current === 'dark' ? 'light' : 'dark';
           document.documentElement.setAttribute('data-theme', next);
           localStorage.setItem('theme', next);
